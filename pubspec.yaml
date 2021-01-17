@@ -1,0 +1,23 @@
+name: native_geocoder
+description: A new flutter plugin project.
+version: 0.0.1
+homepage: https://github.com/bnxm/native_geocoder
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+  flutter: ">=1.20.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: de.bnxm.native_geocoder
+        pluginClass: NativeGeocoderPlugin
