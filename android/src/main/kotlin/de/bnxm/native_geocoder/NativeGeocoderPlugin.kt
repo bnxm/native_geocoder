@@ -19,8 +19,6 @@ class NativeGeocoderPlugin : FlutterPlugin, MethodCallHandler {
     private lateinit var channel: MethodChannel
     private lateinit var context: Context
 
-    private var geocoder: Geocoder? = null
-
     override fun onAttachedToEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(binding.binaryMessenger, "native_geocoder")
         channel.setMethodCallHandler(this)
@@ -36,18 +34,28 @@ class NativeGeocoderPlugin : FlutterPlugin, MethodCallHandler {
     }
 
     private fun getAddresses(result: Result, req: GeocodeRequest) {
-        val geocoder = Geocoder(
-            context,
-            req.locale?.let { Locale(it) } ?: Locale.getDefault()
-        )
+        Thread {
+            val handler = Handler(Looper.getMainLooper())
 
-        try {
-            val addresses = geocoder.getFromLocation(req.latitude, req.longitude, req.maxResults)
+            val geocoder = Geocoder(
+                context,
+                req.locale?.let { Locale(it) } ?: Locale.getDefault()
+            )
 
-            result.success(addresses.map { it.toMap() })
-        } catch (e: Exception) {
-            result.error("error", e.message, null)
-        }
+            try {
+                val addresses = geocoder.getFromLocation(req.latitude, req.longitude, req.maxResults)
+
+                handler.post {
+                    result.success(addresses.map { it.toMap() })
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+
+                handler.post {
+                    result.error("error", e.message, null)
+                }
+            }
+        }.start()
     }
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {

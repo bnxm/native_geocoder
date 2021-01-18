@@ -8,7 +8,8 @@ class Address {
   final String subThoroughfare;
   final String locality;
   final String subLocality;
-  final String state;
+  final String adminArea;
+  final String subAdminArea;
   final String country;
   final String countryCode;
   final String postalCode;
@@ -16,14 +17,15 @@ class Address {
     this.latitude = 0.0,
     this.longitude = 0.0,
     this.adressLines = const [],
-    this.thoroughfare = '',
-    this.subThoroughfare = '',
-    this.locality = '',
-    this.subLocality = '',
-    this.state = '',
-    this.country = '',
-    this.countryCode = '',
-    this.postalCode = '',
+    this.thoroughfare,
+    this.subThoroughfare,
+    this.locality,
+    this.subLocality,
+    this.adminArea = '',
+    this.subAdminArea = '',
+    this.country,
+    this.countryCode,
+    this.postalCode,
   });
 
   factory Address.fromMap(dynamic map) {
@@ -33,20 +35,21 @@ class Address {
       latitude: map['latitude'] ?? 0.0,
       longitude: map['longitude'] ?? 0.0,
       adressLines: List<String>.from(map['adressLines'] ?? const []),
-      thoroughfare: map['thoroughfare'] ?? '',
-      subThoroughfare: map['subThoroughfare'] ?? '',
-      locality: map['locality'] ?? '',
-      subLocality: map['subLocality'] ?? '',
-      state: map['state'] ?? '',
-      country: map['country'] ?? '',
-      countryCode: map['countryCode'] ?? '',
-      postalCode: map['postalCode'] ?? '',
+      thoroughfare: map['thoroughfare'],
+      subThoroughfare: map['subThoroughfare'],
+      locality: map['locality'],
+      subLocality: map['subLocality'],
+      adminArea: map['adminArea'],
+      subAdminArea: map['subAdminArea'],
+      country: map['country'],
+      countryCode: map['countryCode'],
+      postalCode: map['postalCode'],
     );
   }
 
   @override
   String toString() {
-    return 'Address(latitude: $latitude, longitude: $longitude, adressLines: $adressLines, thoroughfare: $thoroughfare, subThoroughfare: $subThoroughfare, locality: $locality, subLocality: $subLocality, state: $state, country: $country, countryCode: $countryCode, postalCode: $postalCode)';
+    return 'Address(latitude: $latitude, longitude: $longitude, adressLines: $adressLines, thoroughfare: $thoroughfare, subThoroughfare: $subThoroughfare, locality: $locality, subLocality: $subLocality, adminArea: $adminArea, subAdminArea: $subAdminArea, country: $country, countryCode: $countryCode, postalCode: $postalCode)';
   }
 
   @override
@@ -61,7 +64,8 @@ class Address {
         o.subThoroughfare == subThoroughfare &&
         o.locality == locality &&
         o.subLocality == subLocality &&
-        o.state == state &&
+        o.adminArea == adminArea &&
+        o.subAdminArea == subAdminArea &&
         o.country == country &&
         o.countryCode == countryCode &&
         o.postalCode == postalCode;
@@ -76,7 +80,8 @@ class Address {
         subThoroughfare.hashCode ^
         locality.hashCode ^
         subLocality.hashCode ^
-        state.hashCode ^
+        adminArea.hashCode ^
+        subAdminArea.hashCode ^
         country.hashCode ^
         countryCode.hashCode ^
         postalCode.hashCode;

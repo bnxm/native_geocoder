@@ -22,10 +22,9 @@ class MyApp extends StatelessWidget {
           child: Container(
             child: FutureBuilder<List<Address>>(
               future: NativeGeocoder().getAddresses(
-                53.55056883318608,
-                9.991052363145235,
-                maxResults: 5,
-                locale: 'de_DE',
+                37.7729561,
+                -122.4186991,
+                maxResults: 1,
               ),
               builder: (context, snapshot) {
                 final addresses = snapshot.data ?? <Address>[];
@@ -39,7 +38,10 @@ class MyApp extends StatelessWidget {
                     for (final addr in addresses)
                       ListTile(
                         title: Text(
-                          addr.thoroughfare,
+                          addr.thoroughfare ??
+                              addr.subLocality ??
+                              addr.locality ??
+                              'none',
                         ),
                         subtitle: Text(
                           '${addr.latitude}, ${addr.longitude}',
